@@ -1,11 +1,15 @@
 같은 반 친구인 진규의 추천으로 이 문제를 풀게 되었다.
+
 https://swexpertacademy.com/main/code/codeBattle/problemDetail.do?contestProbId=AYY1PUiqm1QDFARc&categoryId=AZTujPra0t3HBIOK&categoryType=BATTLE&battleMainPageIndex=1
+
 원래의 하노이 탑은 모든 원판을 다른 쪽으로 옮기는데 2 ^ N - 1번 필요하다는 것인데 이 문제는 원판이 일부만 존재하고, 무작위 상황이 주어지는데, 그 순간에서 원판을 어떻게 옮겨야하는가를 물어본다.
 
 아직 문제 풀이가 완전하지 않아 현재까지의 풀이과정만 적는다.
 
 문제에서 힌트로 
+
 "그리고, 크기가 가장 큰 원판부터 가장 작은 원판까지 차례대로 현재의 위치와 그 원판이 이동해야 하는 위치를 파악하면 바로 위의 원판이 어디로 이동해야 하는 지 결정됨을 깨달았다."
+
 라고 했다.
 
 그래서 stack으로 어떤 원판이 어디서 어디로 움직여야하는지 저장해놓으면 가장 위의 top을 통해 다음 원판의 위치를 결정 할 수 있다고 생각했다.
