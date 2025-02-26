@@ -1,8 +1,12 @@
+#define _CRT_SECURE_NO_DEPRECATE
+#define _CRT_SECURE_NO_WARNINGS
+
 #include <iostream>
 #include <queue>
 #include <unordered_map>
 #include <cstring>
 #include <cmath>
+#include <cstdio>
 
 using namespace std;
 
@@ -12,7 +16,7 @@ int arr[300][300] = {}; // 인접배열 0 이면 없는 도로 있다면 거리가 저장됨
 int N, M;
 int price[300] = {};
 int visit[300] = {};
-
+int lowcost[300] = {};
 
 struct Node {
 	long long int cost; //누적 비용이기 때문에 커질 수 있어 크게 설정
@@ -62,6 +66,8 @@ void Remove(int ID) {
 int Cost(int start, int end) {
 	priority_queue<Node, vector<Node>, cmp> q;
 	memset(visit, 0, sizeof(visit));
+	memset(lowcost, 0, sizeof(lowcost));
+	lowcost[start] = price[start];
 	q.push(Node(0, -price[start], start));
 	while (!q.empty()) {
 		auto cur = q.top();
@@ -70,32 +76,36 @@ int Cost(int start, int end) {
 		int low = -cur.low;
 		int pos = cur.pos;
 
-
-		if (visit[pos] > 0 and low >= visit[pos]) continue;
-
 		if (pos == end) {
 			return cost;
 		}
-		if (visit[pos] == 0) visit[pos] = low;
-		else visit[pos] = min(low, visit[pos]);
-
-		for (int i = 0; i < N; i++) {
-			if (arr[pos][i] == 0) continue;
-			if (visit[i] > 0 and low >= visit[i]) continue;
-			int tmp = low;
-			if (low > price[i]) low = price[i];
-				q.push(Node( -(cost + arr[pos][i] * tmp), -low, i));
-				
+		if (visit[pos] > 0 and visit[pos] >= cost and lowcost[pos] >= low) continue;
+		if (visit[pos] == 0 or lowcost[pos] > low) {
+			visit[pos] = cost;
+			lowcost[pos] = low;
+			if (low > price[pos]) low = price[pos];
+			for (int i = 0; i < N; i++) {
+				if (arr[pos][i] == 0) continue;
+				if (visit[i] == 0 or lowcost[i] > low) {
+					q.push(Node(-(cost + arr[pos][i] * low), -low, i));
+				}				
 			}
+		}
+		
 	}
 	return -1;
 }
 
 int main() {
+	
+	freopen("input.txt", "r", stdin);
+	clock_t s, f;
+	s = clock();
 	int T;
 	cin >> T;
 	int cmd, num, id, start, end, length, ans;
 	for (int t = 1; t <= T; t++) {
+		//cout << '#' << t << '\n';
 		cin >> N >> M;
 		init();
 		cin >> num;
@@ -113,11 +123,14 @@ int main() {
 				break;
 			case 300:
 				cin >> start >> end;
-				cout << "내 답: " << Cost(start, end) << '\n';
+				//cout << "내 답: " << Cost(start, end) << '\n';
 				break;
 			default:
 				break;
 			}
 		}
 	}
+	f = clock();
+	cout << (double)(f - s) / CLOCKS_PER_SEC;
+	return 0;
 }
