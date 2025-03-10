@@ -22,14 +22,14 @@ int char_to_code(char c) { //책에 포함되는 문자를 0~61의 숫자에 map
 void init_bookhashing() { //책의 맨 앞부분을 hashing함
 	bookhash = 0;
 	for (int i = 0; i < word.size(); i++) {
-		bookhash = bookhash * key + char_to_code(book[i]);
+		bookhash = (bookhash * KEY + char_to_code(book[i])) % MOD;
 	}
 }
 
 void hashing_word() { //단어를 hashing함
 	wordhash = 0;
 	for (int i = 0; i < word.size(); i++) {
-		wordhash = wordhash * key + char_to_code(word[i]);
+		wordhash = (wordhash * KEY + char_to_code(word[i])) % MOD;
 	}
 }
 
@@ -43,10 +43,10 @@ int main() {
 		init_bookhashing();
 		hashing_word();
 		long long int off = 1;
-		for(int i = 0; i < word.size() - 1; i++)  off *= key; //계속 제거해나갈 hash값의 가장 앞자리를 찾아주는 배수
+		for(int i = 0; i < word.size() - 1; i++)  off = (off * KEY) % MOD; //계속 제거해나갈 hash값의 가장 앞자리를 찾아주는 배수
 		for (int i = 0; i < book.size() - word.size(); i++) {
 			if (wordhash == bookhash) ans++; //hash 값이 같으면 같은 단어가 있음
-			bookhash = (bookhash - off * char_to_code(book[i])) * key + char_to_code(book[i + word.size()]);//가장 앞자리의 hash를 제거하고, 한자리씩 앞으로 민 다음에 가장 낮은 자리에 새 값을 추가함
+			bookhash = ((bookhash - off * char_to_code(book[i]) % MOD + MOD) * KEY + char_to_code(book[i + word.size()])) % MOD;//가장 앞자리의 hash를 제거하고, 한자리씩 앞으로 민 다음에 가장 낮은 자리에 새 값을 추가함
 		}
 		if (wordhash == bookhash) ans++; //마지막 hashing을 한 뒤에 한번 더 확인해야 함
 		cout << '#' << t << ' ' << ans << '\n';
