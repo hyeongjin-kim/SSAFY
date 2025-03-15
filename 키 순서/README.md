@@ -1,4 +1,4 @@
-이 기록을 시작하게 된 계기이자 SSAFY에서 처음 본 A형 취득 시험에서 나왔던 문제이다.
+이 기록을 시작하게 된 계기이자 SSAFY에서 나왔던 문제이다.
 https://swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AWXQsLWKd5cDFAUo
 
 문제를 간략히 설명하자면
